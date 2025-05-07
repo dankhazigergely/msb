@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSurebet2Way } from "@/app/hooks/useSurebet2Way";
 import { Card, CardContent } from "@/components/ui/card";
 import BetSaveSection from "@/app/components/BetSaveSection";
@@ -9,7 +9,11 @@ import CalculatorHeader from "@/app/components/CalculatorHeader";
 
 import { StakeField2Way } from "@/app/types/surebet";
 
-const SureBetCalculator2Way = () => {
+interface SureBetCalculator2WayProps {
+  initialParams?: Record<string, string>;
+}
+
+const SureBetCalculator2Way: React.FC<SureBetCalculator2WayProps> = ({ initialParams }) => {
     const [odds1, setOdds1] = useState("2");
     const [odds2, setOdds2] = useState("2");
     const [odds1Type, setOdds1Type] = useState("");
@@ -18,6 +22,18 @@ const SureBetCalculator2Way = () => {
     const [stake1, setStake1] = useState(0);
     const [stake2, setStake2] = useState(0);
     const [fixedField, setFixedField] = useState<StakeField2Way>('total');
+    const [name, setName] = useState("");
+
+    // initialParams feldolgozása mountkor
+    useEffect(() => {
+        if (!initialParams) return;
+        if (initialParams.odds1) setOdds1(initialParams.odds1);
+        if (initialParams.odds2) setOdds2(initialParams.odds2);
+        if (initialParams.stake1) setStake1(Number(initialParams.stake1));
+        if (initialParams.stake2) setStake2(Number(initialParams.stake2));
+        if (initialParams.name) setName(initialParams.name);
+        setFixedField('stake1');
+    }, [initialParams]);
 
     // Kalkulációk kiszervezve hook-ba
     const { stake1: calcStake1, stake2: calcStake2, totalStake: calcTotalStake, profit, profitPercentage } = useSurebet2Way({
@@ -93,6 +109,8 @@ const SureBetCalculator2Way = () => {
                         totalStake: calcTotalStake,
                         fixedField
                     }}
+                    betName={name}
+                    setBetName={setName}
                     storageKey="savedBets2Way"
                     setFieldsFromBet={setFieldsFromBet}
                 />

@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSurebet4Way } from "@/app/hooks/useSurebet4Way";
 import { Card, CardContent } from "@/components/ui/card";
 import BetSaveSection from "@/app/components/BetSaveSection";
@@ -9,7 +9,11 @@ import CalculatorHeader from "@/app/components/CalculatorHeader";
 
 import { StakeField4Way } from "@/app/types/surebet";
 
-const SureBetCalculator4Way = () => {
+interface SureBetCalculator4WayProps {
+  initialParams?: Record<string, string>;
+}
+
+const SureBetCalculator4Way: React.FC<SureBetCalculator4WayProps> = ({ initialParams }) => {
     const [fixedField, setFixedField] = useState<StakeField4Way>('total');
     const [odds1, setOdds1] = useState("4");
     const [odds2, setOdds2] = useState("4");
@@ -24,6 +28,22 @@ const SureBetCalculator4Way = () => {
     const [stake2, setStake2] = useState(0);
     const [stake3, setStake3] = useState(0);
     const [stake4, setStake4] = useState(0);
+    const [name, setName] = useState("");
+
+    // initialParams feldolgozása mountkor
+    useEffect(() => {
+        if (!initialParams) return;
+        if (initialParams.odds1) setOdds1(initialParams.odds1);
+        if (initialParams.odds2) setOdds2(initialParams.odds2);
+        if (initialParams.odds3) setOdds3(initialParams.odds3);
+        if (initialParams.odds4) setOdds4(initialParams.odds4);
+        if (initialParams.stake1) setStake1(Number(initialParams.stake1));
+        if (initialParams.stake2) setStake2(Number(initialParams.stake2));
+        if (initialParams.stake3) setStake3(Number(initialParams.stake3));
+        if (initialParams.stake4) setStake4(Number(initialParams.stake4));
+        if (initialParams.name) setName(initialParams.name);
+        setFixedField('stake1');
+    }, [initialParams]);
 
     // Kalkulációk kiszervezve hook-ba
     const { stake1: calcStake1, stake2: calcStake2, stake3: calcStake3, stake4: calcStake4, totalStake: calcTotalStake, profit, profitPercentage } = useSurebet4Way({
@@ -145,6 +165,8 @@ const SureBetCalculator4Way = () => {
                         totalStake: calcTotalStake,
                         fixedField
                     }}
+                    betName={name}
+                    setBetName={setName}
                     storageKey="savedBets4Way"
                     setFieldsFromBet={setFieldsFromBet}
                 />

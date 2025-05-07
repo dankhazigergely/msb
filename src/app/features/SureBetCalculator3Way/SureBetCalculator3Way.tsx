@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useSurebet3Way } from "@/app/hooks/useSurebet3Way";
 import { Card, CardContent } from "@/components/ui/card";
 import BetSaveSection from "@/app/components/BetSaveSection";
@@ -8,7 +8,11 @@ import ProfitDisplay from "@/app/components/ProfitDisplay";
 import CalculatorHeader from "@/app/components/CalculatorHeader";
 import { StakeField3Way } from "@/app/types/surebet";
 
-const SureBetCalculator3Way = () => {
+interface SureBetCalculator3WayProps {
+  initialParams?: Record<string, string>;
+}
+
+const SureBetCalculator3Way: React.FC<SureBetCalculator3WayProps> = ({ initialParams }) => {
     const [fixedField, setFixedField] = useState<StakeField3Way>('total');
     const [odds1, setOdds1] = useState("3");
     const [odds2, setOdds2] = useState("3");
@@ -20,6 +24,20 @@ const SureBetCalculator3Way = () => {
     const [stake1, setStake1] = useState(0);
     const [stake2, setStake2] = useState(0);
     const [stake3, setStake3] = useState(0);
+    const [name, setName] = useState("");
+
+    // initialParams feldolgozása mountkor
+    useEffect(() => {
+        if (!initialParams) return;
+        if (initialParams.odds1) setOdds1(initialParams.odds1);
+        if (initialParams.odds2) setOdds2(initialParams.odds2);
+        if (initialParams.odds3) setOdds3(initialParams.odds3);
+        if (initialParams.stake1) setStake1(Number(initialParams.stake1));
+        if (initialParams.stake2) setStake2(Number(initialParams.stake2));
+        if (initialParams.stake3) setStake3(Number(initialParams.stake3));
+        if (initialParams.name) setName(initialParams.name);
+        setFixedField('stake1');
+    }, [initialParams]);
 
     // Kalkulációk kiszervezve hook-ba
     const { stake1: calcStake1, stake2: calcStake2, stake3: calcStake3, totalStake: calcTotalStake, profit, profitPercentage } = useSurebet3Way({
@@ -118,6 +136,8 @@ const SureBetCalculator3Way = () => {
                         totalStake: calcTotalStake,
                         fixedField
                     }}
+                    betName={name}
+                    setBetName={setName}
                     storageKey="savedBets3Way"
                     setFieldsFromBet={setFieldsFromBet}
                 />
