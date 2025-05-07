@@ -1,6 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { Trash2, Share2 } from "lucide-react";
 
 const betLabelFn = (bet: any) => {
   const oddsParts = [];
@@ -18,14 +18,16 @@ const betLabelFn = (bet: any) => {
 
 interface BetSaveSectionProps {
   betFields: Record<string, any>;
+  betName: string;
+  setBetName: (name: string) => void;
   storageKey: string;
   setFieldsFromBet: (bet: any) => void;
 }
 
 const BetSaveSection: React.FC<BetSaveSectionProps> = ({
-  betFields, storageKey, setFieldsFromBet
+  betFields, betName, setBetName, storageKey, setFieldsFromBet
 }) => {
-  const [betName, setBetName] = React.useState("");
+
   const [savedBets, setSavedBets] = React.useState<any[]>([]);
 
   React.useEffect(() => {
@@ -38,9 +40,10 @@ const BetSaveSection: React.FC<BetSaveSectionProps> = ({
     const filteredBets = savedBets.filter(bet => bet.name !== trimmedName);
     const updatedBets = [...filteredBets, newBet];
     setSavedBets(updatedBets);
-    setBetName("");
     localStorage.setItem(storageKey, JSON.stringify(updatedBets));
   };
+
+  const [copied, setCopied] = React.useState(false);
 
   return (
     <>
@@ -55,6 +58,40 @@ const BetSaveSection: React.FC<BetSaveSectionProps> = ({
         <Button onClick={handleSaveBet} className="flex-1 h-10">
           Save
         </Button>
+        <Button
+          onClick={() => {
+            const params = new URLSearchParams();
+            Object.entries(betFields).forEach(([key, value]) => {
+              if (
+                value !== undefined &&
+                value !== null &&
+                value !== "" &&
+                (key.startsWith("odds") || key.startsWith("stake"))
+              ) {
+                params.append(key, value.toString());
+              }
+            });
+            const trimmedName = betName.trim();
+            if (trimmedName) {
+              params.append("name", trimmedName);
+            }
+            const url = `${window.location.origin}${window.location.pathname}?${params.toString()}`;
+            navigator.clipboard.writeText(url).then(() => {
+              setCopied(true);
+              setTimeout(() => setCopied(false), 1500);
+            });
+          }}
+          variant="link"
+          size="icon"
+          className="h-10"
+        >
+          <Share2 className="h-4 w-4" />
+        </Button>
+        {copied && (
+          <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-gray-900 text-white text-sm px-4 py-2 rounded-xl shadow-lg z-50 font-semibold text-center animate-fade-in">
+            Copied to clipboard!
+          </div>
+        )}
       </div>
       <div>
         {savedBets.map((bet, index) => (
