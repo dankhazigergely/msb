@@ -1,5 +1,6 @@
 stages:
   - build
+  - test
   - deploy
 
 build:
@@ -11,6 +12,16 @@ build:
   artifacts:
     paths:
       - out/
+  only:
+    - main
+    - master
+
+test:
+  stage: test
+  image: node:20-alpine
+  script:
+    - npm ci
+    - npm test
   only:
     - main
     - master
