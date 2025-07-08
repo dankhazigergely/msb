@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useSurebet3Way } from "@/app/hooks/useSurebet3Way";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+// import { Button } from "@/components/ui/button"; // Button import removed
 import BetSaveSection from "@/app/components/BetSaveSection";
 import OddsStakeRow from "@/app/components/OddsStakeRow";
 import TotalStakeRow from "@/app/components/TotalStakeRow";
@@ -90,7 +90,7 @@ const SureBetCalculator3Way: React.FC<SureBetCalculator3WayProps> = ({
 
   return (
     <Card className="w-full max-w-md mx-auto">
-      <CalculatorHeader title="3-Way Calculator" value={profitPercentage} />
+      <CalculatorHeader title="3-Way Calculator" value={profitPercentage} onReset={resetCalculatorState} />
       <CardContent className="relative grid gap-4 pt-4">
         <OddsStakeRow<StakeField3Way>
           oddsType={odds1Type} setOddsType={setOdds1Type}
@@ -124,11 +124,7 @@ const SureBetCalculator3Way: React.FC<SureBetCalculator3WayProps> = ({
           fixedField={fixedField} setFixedField={setFixedField}
         />
         <ProfitDisplay profit={profit} />
-        <div className="flex justify-end">
-            <Button onClick={resetCalculatorState} variant="outline" size="sm">
-                Reset
-            </Button>
-        </div>
+        {/* Removed the old Reset button div */}
         <BetSaveSection
           betFields={{
             odds1, odds2, odds3,
