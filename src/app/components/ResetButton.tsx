@@ -12,7 +12,7 @@ const ResetButton: React.FC<ResetButtonProps> = ({ onClick, className = "" }) =>
     <Button
       variant="ghost"
       size="icon"
-      className={`rounded-full ${className}`}
+      className={`rounded-full text-red-500 hover:text-red-700 ${className}`} // Added text-red-500 and hover state
       onClick={onClick}
       aria-label="Reset"
     >
