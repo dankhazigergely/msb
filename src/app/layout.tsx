@@ -6,6 +6,7 @@ import './globals.css';
 import React, { useState, useEffect } from 'react';
 import Calculator from './components/Calculator'; // Import Calculator
 import CalculatorIcon from './components/CalculatorIcon'; // Import CalculatorIcon
+import ThemeSwitcherIcon from './components/ThemeSwitcherIcon'; // Import ThemeSwitcherIcon
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -43,9 +44,32 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const [isCalculatorOpen, setIsCalculatorOpen] = useState(false);
+  const [theme, setTheme] = useState('light'); // Default theme
+
+  // Load theme from localStorage on initial load
+  useEffect(() => {
+    const storedTheme = localStorage.getItem('theme');
+    if (storedTheme) {
+      setTheme(storedTheme);
+    }
+  }, []);
+
+  // Apply theme to HTML element and save to localStorage
+  useEffect(() => {
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+    localStorage.setItem('theme', theme);
+  }, [theme]);
 
   const toggleCalculator = () => {
     setIsCalculatorOpen(!isCalculatorOpen);
+  };
+
+  const toggleTheme = () => {
+    setTheme((prevTheme) => (prevTheme === 'dark' ? 'light' : 'dark'));
   };
 
   // Close calculator on Escape key press
@@ -63,7 +87,7 @@ export default function RootLayout({
 
 
   return (
-    <html lang="en">
+    <html lang="en" className={theme}>
       <head>
         {/* It's generally recommended to put metadata tags directly in <head> or use Next.js <Head> component from 'next/head' for client components if needed,
             but for app router, metadata API is preferred. Since we made this a client component, this setup is a bit mixed.
@@ -75,8 +99,9 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/favicon.png" />
         <link rel="manifest" href="/manifest.json" />
       </head>
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased bg-background text-foreground`}>
         {children}
+        <ThemeSwitcherIcon theme={theme} toggleTheme={toggleTheme} />
         <CalculatorIcon isCalculatorOpen={isCalculatorOpen} toggleCalculator={toggleCalculator} />
         <Calculator isOpen={isCalculatorOpen} onClose={toggleCalculator} />
       </body>

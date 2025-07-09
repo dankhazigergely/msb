@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input"; // Import Input component
 import { Trash2, Share2 } from "lucide-react";
 
 const betLabelFn = (bet: any) => {
@@ -48,12 +49,16 @@ const BetSaveSection: React.FC<BetSaveSectionProps> = ({
   return (
     <>
       <div className="flex gap-2 pt-0">
-        <input
+        <Input
           type="text"
+          id="betNameInput" // Added id
+          name="betName"    // Added name
           value={betName}
           onChange={e => setBetName(e.target.value)}
           placeholder="Name"
-          className="flex-1 px-2 py-1 border rounded h-10"
+          // Use similar classes as other Inputs, or rely on Input component's default styling
+          // The Input component should already be styled for dark mode.
+          className="flex-1 h-10" // Adjusted to match Button height, specific px/py/border/rounded are part of Input
         />
         <Button onClick={handleSaveBet} className="flex-1 h-10">
           Save
