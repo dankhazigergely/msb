@@ -75,7 +75,7 @@ function OddsStakeRow<T extends AnyStakeField = AnyStakeField>({
               setStake(newStake);
             }
           }}
-          className={`w-full px-2 py-1 border rounded ${fixedField === stakeFieldName ? 'bg-white' : ''}`}
+          className={`w-full px-2 py-1 border rounded ${fixedField === stakeFieldName ? 'bg-white dark:bg-gray-700' : ''}`}
           min="0"
           onFocus={e => e.target.select()}
         />
