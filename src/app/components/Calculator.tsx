@@ -73,7 +73,7 @@ const Calculator: React.FC<CalculatorProps> = ({ isOpen, onClose }) => {
         if (resultOfPrevCalc !== undefined) { // Check if calculation happened
             setPreviousValue(resultOfPrevCalc);
             setOperator(op);
-            setHistory(prev => [...prev, `${resultOfPrevCalc} ${op}`]);
+            // setHistory(prev => [...prev, `${resultOfPrevCalc} ${op}`]); // MODIFIED: Don't add to history here
             setInput(''); // Clear input for the next number of the new operation
             setIsResultDisplayed(false); // Not displaying a final result anymore.
         }
@@ -87,7 +87,7 @@ const Calculator: React.FC<CalculatorProps> = ({ isOpen, onClose }) => {
         // currentInputValue="5"
         setPreviousValue(currentInputValue);
         setOperator(op);
-        setHistory(prev => [...prev, `${currentInputValue} ${op}`]);
+        // setHistory(prev => [...prev, `${currentInputValue} ${op}`]); // MODIFIED: Don't add to history here
         setInput('');
         setIsResultDisplayed(false);
       }
@@ -106,20 +106,10 @@ const Calculator: React.FC<CalculatorProps> = ({ isOpen, onClose }) => {
       setInput(''); // Clear input for the next number
       setIsResultDisplayed(false); // Not displaying a final result anymore.
 
-      setHistory(prev => {
-        const newHistory = [...prev];
-        const lastEntry = newHistory[newHistory.length - 1];
-        // If last entry was an operator setup (e.g. "5 +"), replace it with "5 -"
-        if (lastEntry && (lastEntry.trim().endsWith(' +') || lastEntry.trim().endsWith(' -') || lastEntry.trim().endsWith(' *') || lastEntry.trim().endsWith(' /'))) {
-          if(!lastEntry.includes("=")) { // Avoid replacing "5 + 2 = 7" with "7 op" if changing op right after equals.
-             newHistory[newHistory.length - 1] = `${valueToUseAsOperand} ${op}`;
-             return newHistory;
-          }
-        }
-        // Otherwise, add the new operation to history (e.g., after an equals: "7 *")
-        newHistory.push(`${valueToUseAsOperand} ${op}`);
-        return newHistory;
-      });
+      // MODIFIED: Removed history modification logic from here.
+      // History will only be added upon completion of a calculation in `calculateResult`.
+      // The logic for changing an operator (e.g. "5 +" to "5 -") by updating history
+      // is no longer needed if such intermediate states are not stored in history.
     }
     // If currentInputValue is empty and previousValue is null, do nothing (e.g. AC then operator)
   };
@@ -226,7 +216,7 @@ const Calculator: React.FC<CalculatorProps> = ({ isOpen, onClose }) => {
       {/* Display Area */}
       <div className="bg-gray-50 p-2 rounded mb-3 text-right min-h-[70px] sm:min-h-[80px] flex flex-col justify-end border border-gray-200 shadow-inner">
         <div className="text-xs text-gray-500 truncate h-5">
-          {history.length > 0 ? history[history.length -1] : (previousValue && operator ? `${previousValue} ${operator}` : "")}
+          {previousValue && operator ? `${previousValue} ${operator}` : (history.length > 0 ? history[history.length -1] : "")}
         </div>
         <div className="text-2xl sm:text-3xl font-bold text-gray-800 break-all">{input || '0'}</div>
       </div>
@@ -258,7 +248,7 @@ const Calculator: React.FC<CalculatorProps> = ({ isOpen, onClose }) => {
       </div>
 
       {/* History Area */}
-      <div className="mt-3 max-h-24 sm:max-h-28 overflow-y-auto text-xs text-gray-700 p-2 bg-gray-50 rounded border border-gray-200">
+      <div className="mt-3 h-24 sm:h-28 overflow-y-auto text-xs text-gray-700 p-2 bg-gray-50 rounded border border-gray-200">
         <p className="font-semibold mb-1 text-gray-600">Előzmények:</p>
         {history.length === 0 && <p className="text-gray-500 italic">Nincs még előzmény.</p>}
         {history.slice().reverse().map((item, index) => (
