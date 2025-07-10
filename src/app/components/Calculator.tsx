@@ -207,52 +207,52 @@ const Calculator: React.FC<CalculatorProps> = ({ isOpen, onClose }) => {
   if (!isOpen) return null;
 
   return (
-    <div className="fixed bottom-20 right-4 md:bottom-16 md:right-4 bg-white p-3 sm:p-4 rounded-lg shadow-2xl border border-gray-300 w-full max-w-xs sm:w-80 z-50 flex flex-col">
+    <div className="fixed bottom-20 right-4 md:bottom-16 md:right-4 bg-card text-card-foreground p-3 sm:p-4 rounded-lg shadow-2xl border w-full max-w-xs sm:w-80 z-50 flex flex-col">
       <div className="flex justify-between items-center mb-2">
-        <h3 className="text-md sm:text-lg font-semibold text-gray-700">Számológép</h3>
-        <Button variant="ghost" size="sm" onClick={onClose} className="text-gray-500 hover:text-gray-700">X</Button>
+        <h3 className="text-md sm:text-lg font-semibold">Számológép</h3>
+        <Button variant="ghost" size="sm" onClick={onClose} className="text-muted-foreground hover:text-foreground">X</Button>
       </div>
 
       {/* Display Area */}
-      <div className="bg-gray-50 p-2 rounded mb-3 text-right min-h-[70px] sm:min-h-[80px] flex flex-col justify-end border border-gray-200 shadow-inner">
-        <div className="text-xs text-gray-500 truncate h-5">
+      <div className="bg-muted/50 p-2 rounded mb-3 text-right min-h-[70px] sm:min-h-[80px] flex flex-col justify-end border shadow-inner">
+        <div className="text-xs text-muted-foreground truncate h-5">
           {previousValue && operator ? `${previousValue} ${operator}` : (history.length > 0 ? history[history.length -1] : "")}
         </div>
-        <div className="text-2xl sm:text-3xl font-bold text-gray-800 break-all">{input || '0'}</div>
+        <div className="text-2xl sm:text-3xl font-bold text-foreground break-all">{input || '0'}</div>
       </div>
 
       {/* Buttons Grid */}
       <div className="grid grid-cols-4 gap-1 sm:gap-2">
         <Button onClick={handleClearAllClick} className="col-span-2 bg-red-500 hover:bg-red-600 text-white py-3 sm:py-2 text-sm sm:text-base">AC</Button>
-        <Button onClick={handleDeleteClick} className="bg-gray-300 hover:bg-gray-400 text-gray-800 py-3 sm:py-2 text-sm sm:text-base">DEL</Button>
+        <Button onClick={handleDeleteClick} className="bg-secondary hover:bg-secondary/80 text-secondary-foreground py-3 sm:py-2 text-sm sm:text-base">DEL</Button>
         <Button onClick={() => handleOperatorClick('/')} className="bg-orange-500 hover:bg-orange-600 text-white py-3 sm:py-2 text-lg sm:text-xl">&divide;</Button>
 
-        <Button onClick={() => handleNumberClick('7')} className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 sm:py-2 text-lg sm:text-xl">7</Button>
-        <Button onClick={() => handleNumberClick('8')} className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 sm:py-2 text-lg sm:text-xl">8</Button>
-        <Button onClick={() => handleNumberClick('9')} className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 sm:py-2 text-lg sm:text-xl">9</Button>
+        <Button onClick={() => handleNumberClick('7')} className="bg-primary-foreground hover:bg-muted text-primary py-3 sm:py-2 text-lg sm:text-xl">7</Button>
+        <Button onClick={() => handleNumberClick('8')} className="bg-primary-foreground hover:bg-muted text-primary py-3 sm:py-2 text-lg sm:text-xl">8</Button>
+        <Button onClick={() => handleNumberClick('9')} className="bg-primary-foreground hover:bg-muted text-primary py-3 sm:py-2 text-lg sm:text-xl">9</Button>
         <Button onClick={() => handleOperatorClick('*')} className="bg-orange-500 hover:bg-orange-600 text-white py-3 sm:py-2 text-lg sm:text-xl">&times;</Button>
 
-        <Button onClick={() => handleNumberClick('4')} className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 sm:py-2 text-lg sm:text-xl">4</Button>
-        <Button onClick={() => handleNumberClick('5')} className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 sm:py-2 text-lg sm:text-xl">5</Button>
-        <Button onClick={() => handleNumberClick('6')} className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 sm:py-2 text-lg sm:text-xl">6</Button>
+        <Button onClick={() => handleNumberClick('4')} className="bg-primary-foreground hover:bg-muted text-primary py-3 sm:py-2 text-lg sm:text-xl">4</Button>
+        <Button onClick={() => handleNumberClick('5')} className="bg-primary-foreground hover:bg-muted text-primary py-3 sm:py-2 text-lg sm:text-xl">5</Button>
+        <Button onClick={() => handleNumberClick('6')} className="bg-primary-foreground hover:bg-muted text-primary py-3 sm:py-2 text-lg sm:text-xl">6</Button>
         <Button onClick={() => handleOperatorClick('-')} className="bg-orange-500 hover:bg-orange-600 text-white py-3 sm:py-2 text-lg sm:text-xl">&minus;</Button>
 
-        <Button onClick={() => handleNumberClick('1')} className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 sm:py-2 text-lg sm:text-xl">1</Button>
-        <Button onClick={() => handleNumberClick('2')} className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 sm:py-2 text-lg sm:text-xl">2</Button>
-        <Button onClick={() => handleNumberClick('3')} className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 sm:py-2 text-lg sm:text-xl">3</Button>
+        <Button onClick={() => handleNumberClick('1')} className="bg-primary-foreground hover:bg-muted text-primary py-3 sm:py-2 text-lg sm:text-xl">1</Button>
+        <Button onClick={() => handleNumberClick('2')} className="bg-primary-foreground hover:bg-muted text-primary py-3 sm:py-2 text-lg sm:text-xl">2</Button>
+        <Button onClick={() => handleNumberClick('3')} className="bg-primary-foreground hover:bg-muted text-primary py-3 sm:py-2 text-lg sm:text-xl">3</Button>
         <Button onClick={() => handleOperatorClick('+')} className="bg-orange-500 hover:bg-orange-600 text-white py-3 sm:py-2 text-lg sm:text-xl">+</Button>
 
-        <Button onClick={() => handleNumberClick('0')} className="col-span-2 bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 sm:py-2 text-lg sm:text-xl">0</Button>
-        <Button onClick={() => handleNumberClick('.')} className="bg-gray-200 hover:bg-gray-300 text-gray-800 py-3 sm:py-2 text-lg sm:text-xl">.</Button>
+        <Button onClick={() => handleNumberClick('0')} className="col-span-2 bg-primary-foreground hover:bg-muted text-primary py-3 sm:py-2 text-lg sm:text-xl">0</Button>
+        <Button onClick={() => handleNumberClick('.')} className="bg-primary-foreground hover:bg-muted text-primary py-3 sm:py-2 text-lg sm:text-xl">.</Button>
         <Button onClick={handleEqualsClick} className="bg-green-500 hover:bg-green-600 text-white py-3 sm:py-2 text-lg sm:text-xl">=</Button>
       </div>
 
       {/* History Area */}
-      <div className="mt-3 h-24 sm:h-28 overflow-y-auto text-xs text-gray-700 p-2 bg-gray-50 rounded border border-gray-200">
-        <p className="font-semibold mb-1 text-gray-600">Előzmények:</p>
-        {history.length === 0 && <p className="text-gray-500 italic">Nincs még előzmény.</p>}
+      <div className="mt-3 h-24 sm:h-28 overflow-y-auto text-xs text-muted-foreground p-2 bg-muted/50 rounded border">
+        <p className="font-semibold mb-1 text-foreground">Előzmények:</p>
+        {history.length === 0 && <p className="text-muted-foreground italic">Nincs még előzmény.</p>}
         {history.slice().reverse().map((item, index) => (
-          <div key={index} className="truncate py-0.5 hover:bg-gray-100 rounded px-1">{item}</div>
+          <div key={index} className="truncate py-0.5 hover:bg-muted rounded px-1">{item}</div>
         ))}
       </div>
     </div>
