@@ -29,7 +29,7 @@ describe('Calculator Component', () => {
 
   // Helper to get the display element
   const getDisplay = () => container.querySelector('.text-2xl.font-bold');
-  const getHistoryDisplay = () => container.querySelector('.text-xs.text-gray-500.truncate');
+  const getHistoryDisplay = () => container.querySelector('.text-xs.text-muted-foreground.truncate');
   const getFullHistoryItems = () => Array.from(container.querySelectorAll('.mt-3 div.truncate'));
 
 

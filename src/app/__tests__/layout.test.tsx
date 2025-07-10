@@ -101,7 +101,10 @@ describe('RootLayout', () => {
     // verify the theme switching logic, localStorage interaction, and class changes on document.documentElement.
     // Forcing a container like `document.documentElement` can lead to other issues or require manual cleanup.
     // Thus, we will proceed without altering the render method for now, acknowledging the warning.
-    return render(<RootLayout>{children}</RootLayout>);
+    return render(<RootLayout>{children}</RootLayout>, {
+      baseElement: document.body,
+      container: document.body,
+    });
   };
 
 
