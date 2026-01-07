@@ -45,12 +45,12 @@ describe('useSurebet5Way', () => {
                 })
             );
             // denom = 360 + 240 + 180 + 144 + 120 = 1044
-            // s1 = round(274 * 360 / 1044) ≈ 95
-            // s2 = round(274 * 240 / 1044) ≈ 63
-            // s3 = round(274 * 180 / 1044) ≈ 47
-            // s4 = round(274 * 144 / 1044) ≈ 38
-            // s5 = round(274 * 120 / 1044) ≈ 31
-            expect(result.current.stake1).toBe(95);
+            // s1 = round(274 * 360 / 1044) = round(94.48) = 94
+            // s2 = round(274 * 240 / 1044) = round(62.99) = 63
+            // s3 = round(274 * 180 / 1044) = round(47.24) = 47
+            // s4 = round(274 * 144 / 1044) = round(37.79) = 38
+            // s5 = round(274 * 120 / 1044) = round(31.49) = 31
+            expect(result.current.stake1).toBe(94);
             expect(result.current.stake2).toBe(63);
             expect(result.current.stake3).toBe(47);
             expect(result.current.stake4).toBe(38);
