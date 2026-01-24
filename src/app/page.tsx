@@ -220,26 +220,26 @@ export default function Home() {
   return (
     <div className="container mx-auto py-2">
       <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="flex gap-2 p-4 mb-2 justify-center max-w-md mx-auto h-auto bg-transparent">
-          <TabsTrigger value="2-way" className="px-6 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
+        <TabsList className="flex gap-1.5 p-3 mb-2 justify-between max-w-md mx-auto h-auto bg-transparent w-full">
+          <TabsTrigger value="2-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
             2
           </TabsTrigger>
-          <TabsTrigger value="3-way" className="px-6 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
+          <TabsTrigger value="3-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
             3
           </TabsTrigger>
-          <TabsTrigger value="4-way" className="px-6 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
+          <TabsTrigger value="4-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
             4
           </TabsTrigger>
-          <TabsTrigger value="5-way" className="px-6 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
+          <TabsTrigger value="5-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
             5
           </TabsTrigger>
-          <TabsTrigger value="6-way" className="px-6 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
+          <TabsTrigger value="6-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
             6
           </TabsTrigger>
-          <TabsTrigger value="7-way" className="px-6 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
+          <TabsTrigger value="7-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
             7
           </TabsTrigger>
-          <TabsTrigger value="8-way" className="px-6 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
+          <TabsTrigger value="8-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
             8
           </TabsTrigger>
         </TabsList>
