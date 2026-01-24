@@ -171,6 +171,7 @@ export type CalculatorState8Way = typeof defaultCalculatorState8Way;
 export default function Home() {
   const [activeTab, setActiveTab] = useState("2-way");
   const [initialParams, setInitialParams] = useState<Record<string, string> | undefined>(undefined);
+  const [menuExpanded, setMenuExpanded] = useState(false);
 
   // Kalkulátorok állapotának közös kezelése
   const [calculatorState2Way, setCalculatorState2Way] = useState<CalculatorState2Way>(defaultCalculatorState2Way);
@@ -180,6 +181,10 @@ export default function Home() {
   const [calculatorState6Way, setCalculatorState6Way] = useState<CalculatorState6Way>(defaultCalculatorState6Way);
   const [calculatorState7Way, setCalculatorState7Way] = useState<CalculatorState7Way>(defaultCalculatorState7Way);
   const [calculatorState8Way, setCalculatorState8Way] = useState<CalculatorState8Way>(defaultCalculatorState8Way);
+
+  // Ha 5-8 tab aktív, a "..." gomb aktív stílust kap
+  const isHigherTabActive = ["5-way", "6-way", "7-way", "8-way"].includes(activeTab);
+  const showFullMenu = menuExpanded;
 
   useEffect(() => {
     const params = Object.fromEntries(new URLSearchParams(window.location.search));
@@ -230,18 +235,40 @@ export default function Home() {
           <TabsTrigger value="4-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
             4
           </TabsTrigger>
-          <TabsTrigger value="5-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
-            5
-          </TabsTrigger>
-          <TabsTrigger value="6-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
-            6
-          </TabsTrigger>
-          <TabsTrigger value="7-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
-            7
-          </TabsTrigger>
-          <TabsTrigger value="8-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
-            8
-          </TabsTrigger>
+          {showFullMenu ? (
+            <>
+              <TabsTrigger value="5-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
+                5
+              </TabsTrigger>
+              <TabsTrigger value="6-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
+                6
+              </TabsTrigger>
+              <TabsTrigger value="7-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
+                7
+              </TabsTrigger>
+              <TabsTrigger value="8-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
+                8
+              </TabsTrigger>
+              <button
+                type="button"
+                onClick={() => setMenuExpanded(false)}
+                className="flex-1 px-3 py-2 rounded-full bg-gray-200 shadow hover:bg-gray-300 transition font-semibold border border-gray-300 dark:bg-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-500"
+              >
+                ←
+              </button>
+            </>
+          ) : (
+            <button
+              type="button"
+              onClick={() => setMenuExpanded(true)}
+              className={`flex-1 px-3 py-2 rounded-full shadow transition font-semibold border ${isHigherTabActive
+                  ? "bg-blue-600 text-white shadow-md border-blue-600"
+                  : "bg-gray-200 hover:bg-gray-300 border-gray-300 dark:bg-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-500"
+                }`}
+            >
+              ...
+            </button>
+          )}
         </TabsList>
         <TabsContent value="2-way">
           <SureBetCalculator2Way initialParams={activeTab === "2-way" ? initialParams : undefined} calculatorState={calculatorState2Way} setCalculatorState={setCalculatorState2Way} resetCalculatorState={() => resetCalculatorState('2-way')} />
