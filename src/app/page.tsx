@@ -8,7 +8,8 @@ import SureBetCalculator5Way from "./features/SureBetCalculator5Way";
 import SureBetCalculator6Way from "./features/SureBetCalculator6Way";
 import SureBetCalculator7Way from "./features/SureBetCalculator7Way";
 import SureBetCalculator8Way from "./features/SureBetCalculator8Way";
-import { StakeField2Way, StakeField3Way, StakeField4Way, StakeField5Way, StakeField6Way, StakeField7Way, StakeField8Way } from "@/app/types/surebet";
+import SureBetCalculator9Way from "./features/SureBetCalculator9Way";
+import { StakeField2Way, StakeField3Way, StakeField4Way, StakeField5Way, StakeField6Way, StakeField7Way, StakeField8Way, StakeField9Way } from "@/app/types/surebet";
 
 import { useEffect, useState } from "react";
 
@@ -160,6 +161,39 @@ const defaultCalculatorState8Way = {
   name: "",
 };
 
+const defaultCalculatorState9Way = {
+  odds1: "9",
+  odds2: "9",
+  odds3: "9",
+  odds4: "9",
+  odds5: "9",
+  odds6: "9",
+  odds7: "9",
+  odds8: "9",
+  odds9: "9",
+  odds1Type: "",
+  odds2Type: "",
+  odds3Type: "",
+  odds4Type: "",
+  odds5Type: "",
+  odds6Type: "",
+  odds7Type: "",
+  odds8Type: "",
+  odds9Type: "",
+  totalStake: "10000",
+  stake1: 0,
+  stake2: 0,
+  stake3: 0,
+  stake4: 0,
+  stake5: 0,
+  stake6: 0,
+  stake7: 0,
+  stake8: 0,
+  stake9: 0,
+  fixedField: "total" as StakeField9Way,
+  name: "",
+};
+
 export type CalculatorState2Way = typeof defaultCalculatorState2Way;
 export type CalculatorState3Way = typeof defaultCalculatorState3Way;
 export type CalculatorState4Way = typeof defaultCalculatorState4Way;
@@ -167,6 +201,7 @@ export type CalculatorState5Way = typeof defaultCalculatorState5Way;
 export type CalculatorState6Way = typeof defaultCalculatorState6Way;
 export type CalculatorState7Way = typeof defaultCalculatorState7Way;
 export type CalculatorState8Way = typeof defaultCalculatorState8Way;
+export type CalculatorState9Way = typeof defaultCalculatorState9Way;
 
 export default function Home() {
   const [activeTab, setActiveTab] = useState("2-way");
@@ -181,9 +216,10 @@ export default function Home() {
   const [calculatorState6Way, setCalculatorState6Way] = useState<CalculatorState6Way>(defaultCalculatorState6Way);
   const [calculatorState7Way, setCalculatorState7Way] = useState<CalculatorState7Way>(defaultCalculatorState7Way);
   const [calculatorState8Way, setCalculatorState8Way] = useState<CalculatorState8Way>(defaultCalculatorState8Way);
+  const [calculatorState9Way, setCalculatorState9Way] = useState<CalculatorState9Way>(defaultCalculatorState9Way);
 
-  // Ha 5-8 tab aktív, a "..." gomb aktív stílust kap
-  const isHigherTabActive = ["5-way", "6-way", "7-way", "8-way"].includes(activeTab);
+  // Ha 5-9 tab aktív, a "..." gomb aktív stílust kap
+  const isHigherTabActive = ["5-way", "6-way", "7-way", "8-way", "9-way"].includes(activeTab);
   const showFullMenu = menuExpanded;
 
   useEffect(() => {
@@ -191,7 +227,8 @@ export default function Home() {
     const hasAny = Object.keys(params).length > 0;
     if (hasAny) {
       setInitialParams(params);
-      if (params.odds8) setActiveTab("8-way");
+      if (params.odds9) setActiveTab("9-way");
+      else if (params.odds8) setActiveTab("8-way");
       else if (params.odds7) setActiveTab("7-way");
       else if (params.odds6) setActiveTab("6-way");
       else if (params.odds5) setActiveTab("5-way");
@@ -210,7 +247,7 @@ export default function Home() {
     }
   }, [initialParams]);
 
-  const resetCalculatorState = (calculatorType: '2-way' | '3-way' | '4-way' | '5-way' | '6-way' | '7-way' | '8-way') => {
+  const resetCalculatorState = (calculatorType: '2-way' | '3-way' | '4-way' | '5-way' | '6-way' | '7-way' | '8-way' | '9-way') => {
     switch (calculatorType) {
       case '2-way': setCalculatorState2Way(defaultCalculatorState2Way); break;
       case '3-way': setCalculatorState3Way(defaultCalculatorState3Way); break;
@@ -219,6 +256,7 @@ export default function Home() {
       case '6-way': setCalculatorState6Way(defaultCalculatorState6Way); break;
       case '7-way': setCalculatorState7Way(defaultCalculatorState7Way); break;
       case '8-way': setCalculatorState8Way(defaultCalculatorState8Way); break;
+      case '9-way': setCalculatorState9Way(defaultCalculatorState9Way); break;
     }
   };
 
@@ -249,6 +287,9 @@ export default function Home() {
               <TabsTrigger value="8-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
                 8
               </TabsTrigger>
+              <TabsTrigger value="9-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
+                9
+              </TabsTrigger>
               <button
                 type="button"
                 onClick={() => setMenuExpanded(false)}
@@ -262,8 +303,8 @@ export default function Home() {
               type="button"
               onClick={() => setMenuExpanded(true)}
               className={`flex-1 px-3 py-2 rounded-full shadow transition font-semibold border ${isHigherTabActive
-                  ? "bg-blue-600 text-white shadow-md border-blue-600"
-                  : "bg-gray-200 hover:bg-gray-300 border-gray-300 dark:bg-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-500"
+                ? "bg-blue-600 text-white shadow-md border-blue-600"
+                : "bg-gray-200 hover:bg-gray-300 border-gray-300 dark:bg-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-500"
                 }`}
             >
               ...
@@ -290,6 +331,9 @@ export default function Home() {
         </TabsContent>
         <TabsContent value="8-way">
           <SureBetCalculator8Way initialParams={activeTab === "8-way" ? initialParams : undefined} calculatorState={calculatorState8Way} setCalculatorState={setCalculatorState8Way} resetCalculatorState={() => resetCalculatorState('8-way')} />
+        </TabsContent>
+        <TabsContent value="9-way">
+          <SureBetCalculator9Way initialParams={activeTab === "9-way" ? initialParams : undefined} calculatorState={calculatorState9Way} setCalculatorState={setCalculatorState9Way} resetCalculatorState={() => resetCalculatorState('9-way')} />
         </TabsContent>
       </Tabs>
     </div>
