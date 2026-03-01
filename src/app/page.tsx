@@ -1,263 +1,46 @@
 "use client";
 
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import SureBetCalculator2Way from "./features/SureBetCalculator2Way";
-import SureBetCalculator3Way from "./features/SureBetCalculator3Way";
-import SureBetCalculator4Way from "./features/SureBetCalculator4Way";
-import SureBetCalculator5Way from "./features/SureBetCalculator5Way";
-import SureBetCalculator6Way from "./features/SureBetCalculator6Way";
-import SureBetCalculator7Way from "./features/SureBetCalculator7Way";
-import SureBetCalculator8Way from "./features/SureBetCalculator8Way";
-import SureBetCalculator9Way from "./features/SureBetCalculator9Way";
-import SureBetCalculatorNWay, { createDefaultNWayState, CalculatorStateNWay } from "./features/SureBetCalculatorNWay";
-import { StakeField2Way, StakeField3Way, StakeField4Way, StakeField5Way, StakeField6Way, StakeField7Way, StakeField8Way, StakeField9Way } from "@/app/types/surebet";
-
 import { useEffect, useState } from "react";
-
-// Alapértelmezett állapotok definiálása
-const defaultCalculatorState2Way = {
-  odds1: "2",
-  odds2: "2",
-  odds1Type: "",
-  odds2Type: "",
-  totalStake: "10000",
-  stake1: 0,
-  stake2: 0,
-  fixedField: "total" as StakeField2Way,
-  name: "",
-};
-
-const defaultCalculatorState3Way = {
-  odds1: "3",
-  odds2: "3",
-  odds3: "3",
-  odds1Type: "",
-  odds2Type: "",
-  odds3Type: "",
-  totalStake: "10000",
-  stake1: 0,
-  stake2: 0,
-  stake3: 0,
-  fixedField: "total" as StakeField3Way,
-  name: "",
-};
-
-const defaultCalculatorState4Way = {
-  odds1: "4",
-  odds2: "4",
-  odds3: "4",
-  odds4: "4",
-  odds1Type: "",
-  odds2Type: "",
-  odds3Type: "",
-  odds4Type: "",
-  totalStake: "10000",
-  stake1: 0,
-  stake2: 0,
-  stake3: 0,
-  stake4: 0,
-  fixedField: "total" as StakeField4Way,
-  name: "",
-};
-
-const defaultCalculatorState5Way = {
-  odds1: "5",
-  odds2: "5",
-  odds3: "5",
-  odds4: "5",
-  odds5: "5",
-  odds1Type: "",
-  odds2Type: "",
-  odds3Type: "",
-  odds4Type: "",
-  odds5Type: "",
-  totalStake: "10000",
-  stake1: 0,
-  stake2: 0,
-  stake3: 0,
-  stake4: 0,
-  stake5: 0,
-  fixedField: "total" as StakeField5Way,
-  name: "",
-};
-
-const defaultCalculatorState6Way = {
-  odds1: "6",
-  odds2: "6",
-  odds3: "6",
-  odds4: "6",
-  odds5: "6",
-  odds6: "6",
-  odds1Type: "",
-  odds2Type: "",
-  odds3Type: "",
-  odds4Type: "",
-  odds5Type: "",
-  odds6Type: "",
-  totalStake: "10000",
-  stake1: 0,
-  stake2: 0,
-  stake3: 0,
-  stake4: 0,
-  stake5: 0,
-  stake6: 0,
-  fixedField: "total" as StakeField6Way,
-  name: "",
-};
-
-const defaultCalculatorState7Way = {
-  odds1: "7",
-  odds2: "7",
-  odds3: "7",
-  odds4: "7",
-  odds5: "7",
-  odds6: "7",
-  odds7: "7",
-  odds1Type: "",
-  odds2Type: "",
-  odds3Type: "",
-  odds4Type: "",
-  odds5Type: "",
-  odds6Type: "",
-  odds7Type: "",
-  totalStake: "10000",
-  stake1: 0,
-  stake2: 0,
-  stake3: 0,
-  stake4: 0,
-  stake5: 0,
-  stake6: 0,
-  stake7: 0,
-  fixedField: "total" as StakeField7Way,
-  name: "",
-};
-
-const defaultCalculatorState8Way = {
-  odds1: "8",
-  odds2: "8",
-  odds3: "8",
-  odds4: "8",
-  odds5: "8",
-  odds6: "8",
-  odds7: "8",
-  odds8: "8",
-  odds1Type: "",
-  odds2Type: "",
-  odds3Type: "",
-  odds4Type: "",
-  odds5Type: "",
-  odds6Type: "",
-  odds7Type: "",
-  odds8Type: "",
-  totalStake: "10000",
-  stake1: 0,
-  stake2: 0,
-  stake3: 0,
-  stake4: 0,
-  stake5: 0,
-  stake6: 0,
-  stake7: 0,
-  stake8: 0,
-  fixedField: "total" as StakeField8Way,
-  name: "",
-};
-
-const defaultCalculatorState9Way = {
-  odds1: "9",
-  odds2: "9",
-  odds3: "9",
-  odds4: "9",
-  odds5: "9",
-  odds6: "9",
-  odds7: "9",
-  odds8: "9",
-  odds9: "9",
-  odds1Type: "",
-  odds2Type: "",
-  odds3Type: "",
-  odds4Type: "",
-  odds5Type: "",
-  odds6Type: "",
-  odds7Type: "",
-  odds8Type: "",
-  odds9Type: "",
-  totalStake: "10000",
-  stake1: 0,
-  stake2: 0,
-  stake3: 0,
-  stake4: 0,
-  stake5: 0,
-  stake6: 0,
-  stake7: 0,
-  stake8: 0,
-  stake9: 0,
-  fixedField: "total" as StakeField9Way,
-  name: "",
-};
-
-export type CalculatorState2Way = typeof defaultCalculatorState2Way;
-export type CalculatorState3Way = typeof defaultCalculatorState3Way;
-export type CalculatorState4Way = typeof defaultCalculatorState4Way;
-export type CalculatorState5Way = typeof defaultCalculatorState5Way;
-export type CalculatorState6Way = typeof defaultCalculatorState6Way;
-export type CalculatorState7Way = typeof defaultCalculatorState7Way;
-export type CalculatorState8Way = typeof defaultCalculatorState8Way;
-export type CalculatorState9Way = typeof defaultCalculatorState9Way;
+import SureBetCalculatorNWay, { createDefaultNWayState, CalculatorStateNWay } from "./features/SureBetCalculatorNWay";
 
 export default function Home() {
-  const [activeTab, setActiveTab] = useState("2-way");
+  const [wayCount, setWayCount] = useState(2);
+  const [calculatorState, setCalculatorState] = useState<CalculatorStateNWay>(() => createDefaultNWayState(2));
   const [initialParams, setInitialParams] = useState<Record<string, string> | undefined>(undefined);
   const [menuExpanded, setMenuExpanded] = useState(false);
+  // N-Way (10-20) select állapot
+  const [nWaySelectCount, setNWaySelectCount] = useState(10);
 
-  // N-Way kalkulátor állapot
-  const [nWayCount, setNWayCount] = useState(10);
-  const [calculatorStateNWay, setCalculatorStateNWay] = useState<CalculatorStateNWay>(() => createDefaultNWayState(10));
-
-  // Kalkulátorok állapotának közös kezelése
-  const [calculatorState2Way, setCalculatorState2Way] = useState<CalculatorState2Way>(defaultCalculatorState2Way);
-  const [calculatorState3Way, setCalculatorState3Way] = useState<CalculatorState3Way>(defaultCalculatorState3Way);
-  const [calculatorState4Way, setCalculatorState4Way] = useState<CalculatorState4Way>(defaultCalculatorState4Way);
-  const [calculatorState5Way, setCalculatorState5Way] = useState<CalculatorState5Way>(defaultCalculatorState5Way);
-  const [calculatorState6Way, setCalculatorState6Way] = useState<CalculatorState6Way>(defaultCalculatorState6Way);
-  const [calculatorState7Way, setCalculatorState7Way] = useState<CalculatorState7Way>(defaultCalculatorState7Way);
-  const [calculatorState8Way, setCalculatorState8Way] = useState<CalculatorState8Way>(defaultCalculatorState8Way);
-  const [calculatorState9Way, setCalculatorState9Way] = useState<CalculatorState9Way>(defaultCalculatorState9Way);
-
-  // Ha 5-9 tab aktív, a "..." gomb aktív stílust kap
-  const isHigherTabActive = ["5-way", "6-way", "7-way", "8-way", "9-way", "n-way"].includes(activeTab);
-  const showFullMenu = menuExpanded;
-
-  // N-Way count változásnál állapot reset
-  const handleNWayCountChange = (newCount: number) => {
-    setNWayCount(newCount);
-    setCalculatorStateNWay(createDefaultNWayState(newCount));
+  // Way count változásnál állapot reset
+  const handleWayCountChange = (newCount: number) => {
+    setWayCount(newCount);
+    setCalculatorState(createDefaultNWayState(newCount));
   };
 
+  // N-Way select változás kezelése
+  const handleNWaySelectChange = (newCount: number) => {
+    setNWaySelectCount(newCount);
+    handleWayCountChange(newCount);
+  };
+
+  // URL paraméterek feldolgozása
   useEffect(() => {
     const params = Object.fromEntries(new URLSearchParams(window.location.search));
     const hasAny = Object.keys(params).length > 0;
     if (hasAny) {
-      setInitialParams(params);
-      // Legnagyobb odds index alapján tab detektálás
       let maxOddsIdx = 0;
       for (let i = 20; i >= 1; i--) {
         if (params[`odds${i}`]) { maxOddsIdx = i; break; }
       }
-      if (maxOddsIdx >= 10) {
-        setNWayCount(maxOddsIdx);
-        setCalculatorStateNWay(createDefaultNWayState(maxOddsIdx));
-        setActiveTab("n-way");
-      } else if (maxOddsIdx >= 9) setActiveTab("9-way");
-      else if (maxOddsIdx >= 8) setActiveTab("8-way");
-      else if (maxOddsIdx >= 7) setActiveTab("7-way");
-      else if (maxOddsIdx >= 6) setActiveTab("6-way");
-      else if (maxOddsIdx >= 5) setActiveTab("5-way");
-      else if (maxOddsIdx >= 4) setActiveTab("4-way");
-      else if (maxOddsIdx >= 3) setActiveTab("3-way");
-      else setActiveTab("2-way");
+      const count = Math.max(maxOddsIdx, 2);
+      if (count >= 10) {
+        setNWaySelectCount(count);
+      }
+      setWayCount(count);
+      setCalculatorState(createDefaultNWayState(count));
+      setInitialParams(params);
+      if (count >= 5) setMenuExpanded(true);
       window.history.replaceState({}, document.title, window.location.pathname);
-    } else {
-      setInitialParams(undefined);
     }
   }, []);
 
@@ -267,119 +50,102 @@ export default function Home() {
     }
   }, [initialParams]);
 
-  const resetCalculatorState = (calculatorType: '2-way' | '3-way' | '4-way' | '5-way' | '6-way' | '7-way' | '8-way' | '9-way' | 'n-way') => {
-    switch (calculatorType) {
-      case '2-way': setCalculatorState2Way(defaultCalculatorState2Way); break;
-      case '3-way': setCalculatorState3Way(defaultCalculatorState3Way); break;
-      case '4-way': setCalculatorState4Way(defaultCalculatorState4Way); break;
-      case '5-way': setCalculatorState5Way(defaultCalculatorState5Way); break;
-      case '6-way': setCalculatorState6Way(defaultCalculatorState6Way); break;
-      case '7-way': setCalculatorState7Way(defaultCalculatorState7Way); break;
-      case '8-way': setCalculatorState8Way(defaultCalculatorState8Way); break;
-      case '9-way': setCalculatorState9Way(defaultCalculatorState9Way); break;
-      case 'n-way': setCalculatorStateNWay(createDefaultNWayState(nWayCount)); break;
-    }
+  const resetCalculatorState = () => {
+    setCalculatorState(createDefaultNWayState(wayCount));
   };
+
+  // Aktív tab detektálás a "..." gomb stílusához
+  const isHigherTabActive = wayCount >= 5;
+  const isNWayActive = wayCount >= 10;
+
+  const tabButtonClass = (active: boolean) =>
+    `flex-1 px-3 py-2 rounded-full shadow transition border ${active
+      ? "bg-blue-600 text-white shadow-md border-blue-600"
+      : "bg-white hover:bg-blue-100 hover:text-blue-700 border-gray-200 dark:bg-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-600"
+    }`;
 
   return (
     <div className="container mx-auto py-2">
-      <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-        <TabsList className="flex gap-1.5 p-3 mb-2 justify-between max-w-md mx-auto h-auto bg-transparent w-full">
-          <TabsTrigger value="2-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
-            2
-          </TabsTrigger>
-          <TabsTrigger value="3-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
-            3
-          </TabsTrigger>
-          <TabsTrigger value="4-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
-            4
-          </TabsTrigger>
-          {showFullMenu ? (
-            <>
-              <TabsTrigger value="5-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
-                5
-              </TabsTrigger>
-              <TabsTrigger value="6-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
-                6
-              </TabsTrigger>
-              <TabsTrigger value="7-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
-                7
-              </TabsTrigger>
-              <TabsTrigger value="8-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
-                8
-              </TabsTrigger>
-              <TabsTrigger value="9-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
-                9
-              </TabsTrigger>
-              <TabsTrigger value="n-way" className="flex-1 px-3 py-2 rounded-full bg-white shadow hover:bg-blue-100 hover:text-blue-700 transition font-semibold border border-gray-200 data-[state=active]:bg-blue-600 data-[state=active]:text-white data-[state=active]:shadow-md dark:bg-neutral-700 dark:text-neutral-400 dark:data-[state=active]:bg-blue-600 dark:data-[state=active]:text-white">
-                N
-              </TabsTrigger>
+      {/* Gombok */}
+      <div className="flex gap-1.5 p-3 mb-2 justify-between max-w-md mx-auto h-auto w-full">
+        {[2, 3, 4].map(n => (
+          <button
+            key={n}
+            type="button"
+            onClick={() => handleWayCountChange(n)}
+            className={tabButtonClass(wayCount === n)}
+          >
+            {n}
+          </button>
+        ))}
+        {menuExpanded ? (
+          <>
+            {[5, 6, 7, 8, 9].map(n => (
               <button
+                key={n}
                 type="button"
-                onClick={() => setMenuExpanded(false)}
-                className="flex-1 px-3 py-2 rounded-full bg-gray-200 shadow hover:bg-gray-300 transition font-semibold border border-gray-300 dark:bg-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-500"
+                onClick={() => handleWayCountChange(n)}
+                className={tabButtonClass(wayCount === n)}
               >
-                ←
+                {n}
               </button>
-            </>
-          ) : (
+            ))}
             <button
               type="button"
-              onClick={() => setMenuExpanded(true)}
-              className={`flex-1 px-3 py-2 rounded-full shadow transition font-semibold border ${isHigherTabActive
-                ? "bg-blue-600 text-white shadow-md border-blue-600"
-                : "bg-gray-200 hover:bg-gray-300 border-gray-300 dark:bg-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-500"
-                }`}
+              onClick={() => {
+                setNWaySelectCount(prev => wayCount >= 10 ? wayCount : prev);
+                handleWayCountChange(isNWayActive ? wayCount : nWaySelectCount);
+              }}
+              className={tabButtonClass(isNWayActive)}
             >
-              ...
+              10+
             </button>
-          )}
-        </TabsList>
-        <TabsContent value="2-way">
-          <SureBetCalculator2Way initialParams={activeTab === "2-way" ? initialParams : undefined} calculatorState={calculatorState2Way} setCalculatorState={setCalculatorState2Way} resetCalculatorState={() => resetCalculatorState('2-way')} />
-        </TabsContent>
-        <TabsContent value="3-way">
-          <SureBetCalculator3Way initialParams={activeTab === "3-way" ? initialParams : undefined} calculatorState={calculatorState3Way} setCalculatorState={setCalculatorState3Way} resetCalculatorState={() => resetCalculatorState('3-way')} />
-        </TabsContent>
-        <TabsContent value="4-way">
-          <SureBetCalculator4Way initialParams={activeTab === "4-way" ? initialParams : undefined} calculatorState={calculatorState4Way} setCalculatorState={setCalculatorState4Way} resetCalculatorState={() => resetCalculatorState('4-way')} />
-        </TabsContent>
-        <TabsContent value="5-way">
-          <SureBetCalculator5Way initialParams={activeTab === "5-way" ? initialParams : undefined} calculatorState={calculatorState5Way} setCalculatorState={setCalculatorState5Way} resetCalculatorState={() => resetCalculatorState('5-way')} />
-        </TabsContent>
-        <TabsContent value="6-way">
-          <SureBetCalculator6Way initialParams={activeTab === "6-way" ? initialParams : undefined} calculatorState={calculatorState6Way} setCalculatorState={setCalculatorState6Way} resetCalculatorState={() => resetCalculatorState('6-way')} />
-        </TabsContent>
-        <TabsContent value="7-way">
-          <SureBetCalculator7Way initialParams={activeTab === "7-way" ? initialParams : undefined} calculatorState={calculatorState7Way} setCalculatorState={setCalculatorState7Way} resetCalculatorState={() => resetCalculatorState('7-way')} />
-        </TabsContent>
-        <TabsContent value="8-way">
-          <SureBetCalculator8Way initialParams={activeTab === "8-way" ? initialParams : undefined} calculatorState={calculatorState8Way} setCalculatorState={setCalculatorState8Way} resetCalculatorState={() => resetCalculatorState('8-way')} />
-        </TabsContent>
-        <TabsContent value="9-way">
-          <SureBetCalculator9Way initialParams={activeTab === "9-way" ? initialParams : undefined} calculatorState={calculatorState9Way} setCalculatorState={setCalculatorState9Way} resetCalculatorState={() => resetCalculatorState('9-way')} />
-        </TabsContent>
-        <TabsContent value="n-way">
-          <div className="flex justify-center mb-3">
-            <select
-              value={nWayCount}
-              onChange={e => handleNWayCountChange(Number(e.target.value))}
-              className="border rounded-lg px-4 py-2 text-lg font-semibold bg-white dark:bg-neutral-700 dark:text-white shadow"
+            <button
+              type="button"
+              onClick={() => setMenuExpanded(false)}
+              className="flex-1 px-3 py-2 rounded-full bg-gray-200 shadow hover:bg-gray-300 transition font-semibold border border-gray-300 dark:bg-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-500"
             >
-              {Array.from({ length: 11 }, (_, i) => i + 10).map(n => (
-                <option key={n} value={n}>{n} Way</option>
-              ))}
-            </select>
-          </div>
-          <SureBetCalculatorNWay
-            count={nWayCount}
-            initialParams={activeTab === "n-way" ? initialParams : undefined}
-            calculatorState={calculatorStateNWay}
-            setCalculatorState={setCalculatorStateNWay}
-            resetCalculatorState={() => resetCalculatorState('n-way')}
-          />
-        </TabsContent>
-      </Tabs>
+              ←
+            </button>
+          </>
+        ) : (
+          <button
+            type="button"
+            onClick={() => setMenuExpanded(true)}
+            className={`flex-1 px-3 py-2 rounded-full shadow transition font-semibold border ${isHigherTabActive
+              ? "bg-blue-600 text-white shadow-md border-blue-600"
+              : "bg-gray-200 hover:bg-gray-300 border-gray-300 dark:bg-neutral-600 dark:text-neutral-300 dark:hover:bg-neutral-500"
+              }`}
+          >
+            ...
+          </button>
+        )}
+      </div>
+
+      {/* Második menüsor (10-20), csak ha 9+ aktív */}
+      {isNWayActive && (
+        <div className="flex gap-1.5 p-3 pt-0 mb-2 justify-between max-w-md mx-auto h-auto w-full flex-wrap">
+          {Array.from({ length: 11 }, (_, i) => i + 10).map(n => (
+            <button
+              key={n}
+              type="button"
+              onClick={() => handleNWaySelectChange(n)}
+              className={`${tabButtonClass(wayCount === n)} text-xs px-1.5 py-1.5`}
+            >
+              {n}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {/* Kalkulátor */}
+      <SureBetCalculatorNWay
+        count={wayCount}
+        initialParams={initialParams}
+        calculatorState={calculatorState}
+        setCalculatorState={setCalculatorState}
+        resetCalculatorState={resetCalculatorState}
+      />
     </div>
   );
 }
