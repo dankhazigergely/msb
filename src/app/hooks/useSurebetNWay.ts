@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useMemo } from "react";
 
 // Generikus N-Way surebet hook, tömb-alapú adatszerkezettel
 interface UseSurebetNWayProps {
@@ -23,21 +23,24 @@ export function useSurebetNWay({
 }: UseSurebetNWayProps): UseSurebetNWayResult {
     const n = odds.length;
 
-    const [result, setResult] = useState<UseSurebetNWayResult>({
-        stakes: new Array(n).fill(0),
-        totalStake: "0",
-        profit: 0,
-        profitPercentage: 0,
-    });
+    // Stabil JSON kulcsok a tömbökből, hogy a useMemo ne fusson feleslegesen
+    const oddsKey = JSON.stringify(odds);
+    const stakesKey = JSON.stringify(stakes);
 
-    useEffect(() => {
+    return useMemo(() => {
+        const defaultResult: UseSurebetNWayResult = {
+            stakes: new Array(n).fill(0),
+            totalStake: "0",
+            profit: 0,
+            profitPercentage: 0,
+        };
+
         // Odds értékek parse-olása
         const numOdds = odds.map(o => parseFloat(o));
 
         // Ha bármelyik odds érvénytelen, profit/profitPercentage = 0
         if (numOdds.some(o => isNaN(o))) {
-            setResult(r => ({ ...r, profit: 0, profitPercentage: 0 }));
-            return;
+            return defaultResult;
         }
 
         // Összes odds szorzata
@@ -58,17 +61,16 @@ export function useSurebetNWay({
         if (fixedField === 'total') {
             const numTotalStake = parseFloat(totalStake);
             if (isNaN(numTotalStake)) {
-                setResult(r => ({ ...r, profit: 0, profitPercentage: 0 }));
-                return;
+                return defaultResult;
             }
             const calcStakes = products.map(p => Math.round((numTotalStake * p) / denom));
             const profit = calcStakes[0] * numOdds[0] - numTotalStake;
-            setResult({
+            return {
                 stakes: calcStakes,
                 totalStake: numTotalStake.toFixed(0),
                 profit,
                 profitPercentage,
-            });
+            };
         } else {
             // fixedField egy index (0..N-1) – az adott stake fix
             const fixedIdx = fixedField;
@@ -82,14 +84,13 @@ export function useSurebetNWay({
 
             const total = calcStakes.reduce((acc, s) => acc + s, 0);
             const profit = calcStakes[0] * numOdds[0] - total;
-            setResult({
+            return {
                 stakes: calcStakes,
                 totalStake: total.toFixed(0),
                 profit,
                 profitPercentage,
-            });
+            };
         }
-    }, [odds, stakes, totalStake, fixedField, n]);
-
-    return result;
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [oddsKey, stakesKey, totalStake, fixedField, n]);
 }
