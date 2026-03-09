@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import SureBetCalculatorNWay, { createDefaultNWayState, CalculatorStateNWay } from "./features/SureBetCalculatorNWay";
 
 export default function Home() {
@@ -11,10 +11,32 @@ export default function Home() {
   // N-Way (10-20) select állapot
   const [nWaySelectCount, setNWaySelectCount] = useState(10);
 
-  // Way count változásnál állapot reset
+  // Tárolt állapotok way count-onként
+  const statesRef = useRef<Map<number, CalculatorStateNWay>>(new Map([[2, createDefaultNWayState(2)]]));
+
+  // calculatorState változásakor mindig frissítjük a map-et
+  const setCalculatorStateAndStore = useCallback((stateOrUpdater: CalculatorStateNWay | ((prev: CalculatorStateNWay) => CalculatorStateNWay)) => {
+    setCalculatorState(prev => {
+      const newState = typeof stateOrUpdater === 'function' ? stateOrUpdater(prev) : stateOrUpdater;
+      statesRef.current.set(wayCount, newState);
+      return newState;
+    });
+  }, [wayCount]);
+
+  // Way count változásnál állapot megőrzése/visszaállítása
   const handleWayCountChange = (newCount: number) => {
+    // Mentsük az aktuális állapotot
+    statesRef.current.set(wayCount, calculatorState);
     setWayCount(newCount);
-    setCalculatorState(createDefaultNWayState(newCount));
+    // Ha volt korábban mentett állapot, azt állítsuk vissza
+    const saved = statesRef.current.get(newCount);
+    if (saved) {
+      setCalculatorState(saved);
+    } else {
+      const defaultState = createDefaultNWayState(newCount);
+      statesRef.current.set(newCount, defaultState);
+      setCalculatorState(defaultState);
+    }
   };
 
   // N-Way select változás kezelése
@@ -37,7 +59,9 @@ export default function Home() {
         setNWaySelectCount(count);
       }
       setWayCount(count);
-      setCalculatorState(createDefaultNWayState(count));
+      const defaultState = createDefaultNWayState(count);
+      statesRef.current.set(count, defaultState);
+      setCalculatorState(defaultState);
       setInitialParams(params);
       if (count >= 5) setMenuExpanded(true);
       window.history.replaceState({}, document.title, window.location.pathname);
@@ -51,15 +75,17 @@ export default function Home() {
   }, [initialParams]);
 
   const resetCalculatorState = () => {
-    setCalculatorState(createDefaultNWayState(wayCount));
+    const defaultState = createDefaultNWayState(wayCount);
+    statesRef.current.set(wayCount, defaultState);
+    setCalculatorState(defaultState);
   };
 
   // Aktív tab detektálás a "..." gomb stílusához
   const isHigherTabActive = wayCount >= 5;
   const isNWayActive = wayCount >= 10;
 
-  const tabButtonClass = (active: boolean) =>
-    `flex-1 px-3 py-2 rounded-full shadow transition border ${active
+  const tabButtonClass = (active: boolean, sizeClasses: string = "px-3 py-2") =>
+    `flex-1 flex justify-center items-center ${sizeClasses} rounded-full shadow transition border ${active
       ? "bg-blue-600 text-white shadow-md border-blue-600"
       : "bg-white hover:bg-blue-100 hover:text-blue-700 border-gray-200 dark:bg-neutral-700 dark:text-neutral-400 dark:hover:bg-neutral-600"
     }`;
@@ -124,13 +150,13 @@ export default function Home() {
 
       {/* Második menüsor (10-20), csak ha 9+ aktív */}
       {isNWayActive && (
-        <div className="flex gap-1.5 p-3 pt-0 mb-2 justify-between max-w-md mx-auto h-auto w-full flex-wrap">
+        <div className="flex gap-1 p-3 pt-0 mb-2 justify-between max-w-md mx-auto h-auto w-full">
           {Array.from({ length: 11 }, (_, i) => i + 10).map(n => (
             <button
               key={n}
               type="button"
               onClick={() => handleNWaySelectChange(n)}
-              className={`${tabButtonClass(wayCount === n)} text-xs px-1.5 py-1.5`}
+              className={tabButtonClass(wayCount === n, "px-0 py-1.5 text-xs sm:px-1")}
             >
               {n}
             </button>
@@ -143,7 +169,7 @@ export default function Home() {
         count={wayCount}
         initialParams={initialParams}
         calculatorState={calculatorState}
-        setCalculatorState={setCalculatorState}
+        setCalculatorState={setCalculatorStateAndStore}
         resetCalculatorState={resetCalculatorState}
       />
     </div>
